@@ -9,7 +9,7 @@ export default function Page() {
             <div className="flex flex-col gap-4 ">
                 <h1 className="text-3xl sm:text-5xl font-medium">Mindly Extension Privacy Policy</h1>
                 <p className="text-sm text-gray-500">Last Updated: July, 2025</p>
-                <p>At Mindly, we value your privacy. This policy explains how the Mindly Chrome Extension handles your data.</p>
+                <p>At Memoir, we value your privacy. This policy explains how the Memoir Chrome Extension handles your data.</p>
             </div>
             <div className="flex flex-col gap-4 ">
                 <h2 className="text-xl font-medium bg-indigo-50">What Data We Collect</h2>
@@ -28,7 +28,7 @@ export default function Page() {
             <div className="flex flex-col gap-4 ">
                 <h2 className="text-xl font-medium bg-indigo-50">How We Use the Data</h2>
                 <ul>
-                    <li>To allow you to save content directly to your Mindly Dashboard.
+                    <li>To allow you to save content directly to your Memoir Dashboard.
                     </li>
                     <li>
                         To authenticate your session securely.

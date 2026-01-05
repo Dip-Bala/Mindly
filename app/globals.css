@@ -1,26 +1,54 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* ================================
+   DESIGN TOKENS (DEFAULT = LIGHT)
+   ================================ */
+
+@theme {
+  /* Fonts */
+  --font-sans: var(--font-inter);
+  --font-logo: var(--font-satoshi);
+
+  /* Brand */
+  --color-primary: #5B5FEF;
+  --color-primary-hover: #4A4FD8;
+  --color-accent: #2DD4BF;
+
+  /* Backgrounds */
+  --color-bg: #F8FAFC;
+  --color-surface: #FFFFFF;
+  --color-surface-elevated: #F1F5F9;
+  --color-border: #999999;
+
+  /* Text */
+  --color-text: #0F172A;
+  --color-text-secondary: #475569;
+  --color-text-muted: #94A3B8;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* ================================
+   DARK THEME OVERRIDES
+   ================================ */
+
+:root[data-theme="dark"] {
+  --color-bg: #121212;
+  --color-surface: #111827;
+  --color-surface-elevated: #1E293B;
+  --color-border: #2a281d;
+
+  --color-text: #d9d9d9;
+  --color-text-secondary: #c3c3c3;
+  --color-text-muted: #94A3B8;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
+/* ================================
+   BASE STYLES
+   ================================ */
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--color-bg);
+  color: var(--color-text);
 }
+/* afcbff */
+/* D7F9FF */
+/* F9FBF2 */
