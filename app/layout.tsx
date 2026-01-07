@@ -19,6 +19,7 @@ const satoshi = localFont({
 })
 
 import type { Metadata } from "next";
+import Script from 'next/script';
 
 export const metadata: Metadata = {
   title: {
@@ -69,33 +70,41 @@ export const metadata: Metadata = {
 };
 
 
-export default function RootLayout({children}: {children : React.ReactNode}){
-  return(
-    <html lang="en" className={`${inter.variable} ${satoshi.variable}`}>
-      <body>
-        {children}
-      </body>
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
+    <html lang="en" className={`${inter.variable} ${satoshi.variable}`}
+    suppressHydrationWarning
+    >
+      <head>
+        <Script
+          id="theme-init"
+          strategy="beforeInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `
+              (() => {
+                try {
+                  const stored = localStorage.getItem("theme");
+                  if (stored === "dark" || stored === "light") {
+                    document.documentElement.setAttribute("data-theme", stored);
+                  } else {
+                    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+                    document.documentElement.setAttribute(
+                      "data-theme",
+                      prefersDark ? "dark" : "light"
+                    );
+                  }
+                } catch (e) {}
+              })();
+            `,
+          }}
+        />
+      </head>
+      <body>{children}</body>
     </html>
-  )
+  );
 }
 
-// dangerouslySetInnerHTML is a React property that serves as the replacement for using the browser DOM's innerHTML attribute
-
-<script
-  dangerouslySetInnerHTML={{
-    __html: `
-      (() => {
-        const stored = localStorage.getItem("theme");
-        if (stored === "dark" || stored === "light") {
-          document.documentElement.setAttribute("data-theme", stored);
-        } else {
-          const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-          document.documentElement.setAttribute(
-            "data-theme",
-            prefersDark ? "dark" : "light"
-          );
-        }
-      })();
-    `,
-  }}
-/>
