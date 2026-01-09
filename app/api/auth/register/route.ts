@@ -1,4 +1,4 @@
-import { User } from "@/app/models/User";
+import { User } from "@/models/User";
 import connectDB from "@/lib/mongoDB";
 import bcrypt from "bcryptjs";
 import { NextRequest, NextResponse } from "next/server";

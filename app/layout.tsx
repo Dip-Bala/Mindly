@@ -20,6 +20,8 @@ const satoshi = localFont({
 
 import type { Metadata } from "next";
 import Script from 'next/script';
+import { SessionProvider } from 'next-auth/react';
+import Providers from './providers';
 
 export const metadata: Metadata = {
   title: {
@@ -103,7 +105,10 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body>{children}</body>
+    <body>
+  <Providers>{children}</Providers>
+</body>
+
     </html>
   );
 }
