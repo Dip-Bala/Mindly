@@ -10,7 +10,7 @@
   --font-logo: var(--font-satoshi);
 
   /* Brand */
-  --color-primary: #5B5FEF;
+  --color-primary: #4D2FB2;
   --color-primary-hover: #4A4FD8;
   --color-accent: #2DD4BF;
 
@@ -20,6 +20,7 @@
   --color-surface-elevated: #F1F5F9;
   --color-border: #999999;
 
+  --color-contrast: #000000;
   /* Text */
   --color-text: #0F172A;
   --color-text-secondary: #475569;
@@ -33,13 +34,14 @@
 
 :root[data-theme="dark"] {
   --color-bg: #121212;
-  --color-surface: #272727;
-  --color-surface-elevated: #1E293B;
+  --color-surface: #1f1f1f;
+  --color-surface-elevated: #212022;
   --color-border: #2a281d;
 
+  --color-contrast: #ffffff;
   --color-text: #d9d9d9;
   --color-text-secondary: #c3c3c3;
-  --color-text-muted: #94A3B8;
+  --color-text-muted: #434343;
 }
 
 /* ================================

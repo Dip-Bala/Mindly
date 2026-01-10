@@ -1,71 +1,101 @@
-// "use client";
-// import { zodResolver } from '@hookform/resolvers/zod';
-// import { useMutation } from '@tanstack/react-query';
-// import { signIn } from 'next-auth/react';
-// import Link from 'next/link';
-// import { useRouter } from 'next/navigation';
-// import { SubmitHandler, useForm } from 'react-hook-form';
-// import {z} from 'zod';
+"use client";
 
-// const BaseSchema = z.object({
-//   name: z.string().min(1, "Name is required"),
-//   email: z.email("Invalid email"),
-//   password: z.string().min(6, "Password must be at least 6 characters"),
-// });
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
+import Input from "@/components/ui/Input";
 
-// type SignUpValuesType = z.infer<typeof BaseSchema>;
+export default function RegisterPage() {
+  const router = useRouter();
 
-// export default function Page() {
-//   const router = useRouter();
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
-//   const {
-//     register,
-//     handleSubmit,
-//     formState: { errors, isValid },
-//   } = useForm<SignUpValuesType>({
-//     resolver: zodResolver(BaseSchema),
-//     mode: "onChange",
-//   });
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    setError("");
+    setLoading(true);
 
-//   return (
-//     <form
-//       onSubmit={}
-//       className="flex flex-col gap-4 w-sm rounded-2xl shadow-md px-6 py-8"
-//     >
-//       <p className="text-lg font-medium flex gap-2">
-//         {/* <LogIn /> */}
-//         Register
-//       </p>
+    const res = await fetch("/api/auth/register", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name, email, password }),
+    });
 
-//       <div>
-//         <label>Name</label>
-//         <input {...register("name")} />
-//         {errors.name && <p>{errors.name.message}</p>}
-//       </div>
+    const data = await res.json();
 
-//       <div>
-//         <label>Email</label>
-//         <input {...register("email")} />
-//         {errors.email && <p>{errors.email.message}</p>}
-//       </div>
+    if (!res.ok) {
+      setError(data.message || "Something went wrong");
+      setLoading(false);
+      return;
+    }
 
-//       <div>
-//         <label>Password</label>
-//         <input type="password" {...register("password")} />
-//         {errors.password && <p>{errors.password.message}</p>}
-//       </div>
+    router.push("/login");
+  }
 
-//       <button
-//         type="submit"
-//         disabled={!isValid || mutation.isPending}
-//       >
-//         {mutation.isPending ? "Creating account..." : "Sign Up"}
-//       </button>
+  return (
+    <form onSubmit={handleSubmit} className="space-y-6">
+      <div className="text-center space-y-1">
+        <h1 className="text-xl font-semibold">Create an account</h1>
+        <p className="text-sm opacity-70">
+          Start building your second brain with Memoir.
+        </p>
+      </div>
 
-//       <p className="text-sm text-center">
-//         Already have an account?{" "}
-//         <Link href="/login">Login</Link>
-//       </p>
-//     </form>
-//   );
-// }
+      {error && (
+        <p className="text-sm text-red-500 text-center">{error}</p>
+      )}
+
+      <Input
+        label="Name"
+        placeholder="John Doe"
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+      />
+
+      <Input
+        label="Email"
+        placeholder="eg. john@gmail.com"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+      />
+
+      <Input
+        label="Password"
+        type="password"
+        placeholder="••••••••"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+      />
+
+      <button
+        type="submit"
+        disabled={loading}
+        className="
+          w-full
+          bg-[color:var(--color-contrast)]
+          text-[color:var(--color-text-muted)]
+          py-3
+          rounded-lg
+          font-medium
+          hover:opacity-90
+          disabled:opacity-60
+          cursor-pointer
+          disabled:cursor-not-allowed
+        "
+      >
+        {loading ? "Creating account..." : "Sign Up"}
+      </button>
+
+      <p className="text-sm text-center opacity-70">
+        Already have an account?{" "}
+        <Link href="/login" className="underline">
+          Login
+        </Link>
+      </p>
+    </form>
+  );
+}

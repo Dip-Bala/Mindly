@@ -1,8 +1,8 @@
 import { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import connectDB from "./mongoDB";
-import { User } from "@/models/User";
 import bcrypt from "bcryptjs";
+import connectDB from "@/lib/mongoDB";
+import { User } from "@/models/User";
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -17,46 +17,42 @@ export const authOptions: NextAuthOptions = {
           return null;
         }
 
-        // await connectDB();
+        await connectDB();
 
-        // const user = await User.findOne({ email: credentials.email });
+        const user = await User.findOne({ email: credentials.email });
+        if (!user) {
+          return null;
+        }
 
-        const user = { id: "1", name: "Diya", email: "diya@gmail.com" }
-        // if (!user || !user.password) {
-        //   throw Error("Invalid email or password");
-        // }
+        const isValid = await bcrypt.compare(
+          credentials.password,
+          user.password!
+        );
 
-        // const isValid = await bcrypt.compare(
-        //   credentials.password,
-        //   user.password
-        // );
+        if (!isValid) {
+          return null;
+        }
 
-        // if (!isValid) {
-        //   return null;
-        // }
-        if(!user)return null;
         return {
-          // id: user._id.toString(),
-          id: user.id,
+          id: user._id.toString(),
           name: user.name,
           email: user.email,
         };
       },
     }),
   ],
+
   session: {
     strategy: "jwt",
   },
+
   pages: {
     signIn: "/login",
-    signOut: "/logout",
   },
-  secret: process.env.AUTH_SECRET,
-  callbacks: {
-    async signIn({ user, account }) {
-      return true;
-    },
 
+  secret: process.env.NEXTAUTH_SECRET,
+
+  callbacks: {
     async jwt({ token, user }) {
       if (user) {
         token.id = user.id;
@@ -65,7 +61,9 @@ export const authOptions: NextAuthOptions = {
     },
 
     async session({ session, token }) {
-      session.user.id = token.id as string;
+      if (session.user) {
+        session.user.id = token.id as string;
+      }
       return session;
     },
   },
