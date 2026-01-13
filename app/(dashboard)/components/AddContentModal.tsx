@@ -13,32 +13,67 @@ export default function AddContentModal({
   onClose,
 }: AddContentModalProps) {
   const [inputUrl, setInputUrl] = useState("");
-  const [category, setCategory] = useState(activeCategoryId);
+  const [file, setFile] = useState<File | null>(null);
+
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+
+  async function uploadFile(file: File): Promise<string> {
+    const formData = new FormData();
+    formData.append("file", file);
+
+    const res = await fetch("/api/content/upload", {
+      method: "POST",
+      body: formData,
+    });
+
+    if (!res.ok) {
+      throw new Error("File upload failed");
+    }
+
+    const data = await res.json();
+    return data.url; // secure_url from Cloudinary
+  }
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError("");
     setLoading(true);
 
-    const res = await fetch("/api/content", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        url: inputUrl,
-        categoryId: category,
-      }),
-    });
+    try {
+      let finalUrl = inputUrl;
 
-    if (!res.ok) {
-      setError("Failed to save content");
+      // If file selected → upload first
+      if (file) {
+        finalUrl = await uploadFile(file);
+      }
+
+      if (!finalUrl) {
+        setError("Please provide a URL or upload a file");
+        setLoading(false);
+        return;
+      }
+
+      const res = await fetch("/api/content", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          url: finalUrl,
+          categoryId: activeCategoryId,
+        }),
+      });
+
+      if (!res.ok) {
+        throw new Error("Failed to save content");
+      }
+
+      onClose();
+    } catch (err) {
+      console.error(err);
+      setError("Something went wrong");
+    } finally {
       setLoading(false);
-      return;
     }
-
-    setLoading(false);
-    onClose();
   }
 
   return (
@@ -63,6 +98,24 @@ export default function AddContentModal({
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-4">
+            {/* File Upload */}
+            <div>
+              <label className="text-sm mb-1 block">
+                Upload file (optional)
+              </label>
+              <input
+                type="file"
+                accept=".pdf,.jpg,.jpeg,.png,.gif"
+                onChange={(e) => setFile(e.target.files?.[0] || null)}
+                className="w-full text-sm"
+              />
+            </div>
+
+            {/* OR separator */}
+            <div className="text-center text-xs text-text-muted">
+              OR
+            </div>
+
             {/* URL Input */}
             <div>
               <label className="text-sm mb-1 block">
@@ -70,7 +123,6 @@ export default function AddContentModal({
               </label>
               <input
                 type="url"
-                required
                 placeholder="https://..."
                 value={inputUrl}
                 onChange={(e) => setInputUrl(e.target.value)}
@@ -101,7 +153,7 @@ export default function AddContentModal({
 
               <button
                 type="submit"
-                disabled={loading || !inputUrl.trim()}
+                disabled={loading}
                 className="px-4 py-2 rounded bg-primary text-black disabled:opacity-50"
               >
                 {loading ? "Saving..." : "Save"}
