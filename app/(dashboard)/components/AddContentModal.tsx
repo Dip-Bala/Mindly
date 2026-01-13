@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { X } from "lucide-react";
+import { CloudUpload, X } from "lucide-react";
 
 interface AddContentModalProps {
   activeCategoryId: string;
@@ -100,15 +100,16 @@ export default function AddContentModal({
           <form onSubmit={handleSubmit} className="space-y-4">
             {/* File Upload */}
             <div>
-              <label className="text-sm mb-1 block">
-                Upload file (optional)
-              </label>
-              <input
+              <label className="w-ful border border-dashed border-border text-sm mb-1 bg-surface rounded-lg p-4 flex flex-col items-center justify-center cursor-pointer text-text-secondary gap-2">
+                <CloudUpload />
+                Choose a file
+                 <input
                 type="file"
                 accept=".pdf,.jpg,.jpeg,.png,.gif"
                 onChange={(e) => setFile(e.target.files?.[0] || null)}
-                className="w-full text-sm"
+                className="p-2 bg-primary-soft cursor-pointer"
               />
+              </label>
             </div>
 
             {/* OR separator */}
