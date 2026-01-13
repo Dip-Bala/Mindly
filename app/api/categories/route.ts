@@ -31,7 +31,7 @@ export async function POST(req: NextRequest) {
 
     const category = await Category.findOne({ userId: user._id, name });
 
-    console.log("category", category);
+    // console.log("category", category);
     if (category) {
       return NextResponse.json(
         { message: "Category already exists" },
@@ -74,7 +74,7 @@ export async function GET(req: NextRequest) {
     }
     const userId = user._id;
     let category = await Category.find({ userId });
-    console.log(category);
+    // console.log(category);
     if (category.length === 0) {
       const defaultCategyList = [
         { name: "Inbox", color: "neutral", userId },

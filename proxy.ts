@@ -1,5 +1,15 @@
-import { NextRequest } from "next/server";
+import { withAuth } from "next-auth/middleware";
 
-export default function proxy(req: NextRequest){
-    
-}
+export default withAuth({
+  pages: {
+    signIn: "/login",
+  },
+});
+
+export const config = {
+  matcher: [
+    "/dashboard/:path*",
+    "/api/categories/:path*",
+    "/api/content/:path*",
+  ],
+};

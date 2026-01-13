@@ -26,7 +26,7 @@ export default function CategoryItem({
 
   const Icon = config.icon;
   const c = config.colorKey;
-  console.log(c)
+  // console.log(c)
 
   return (
     <button
@@ -34,13 +34,13 @@ export default function CategoryItem({
       className={`
         flex items-center gap-2 w-full px-2 py-1 rounded-md
         transition-colors
-        cursor-pointer
+        cursor-pointer font-normal
         ${
           isActive
             ? `
             
               bg-primary-soft
-              text-primary-deep
+              text-black
             `
             : `
               text-text-secondary

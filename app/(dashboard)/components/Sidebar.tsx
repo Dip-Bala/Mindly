@@ -45,6 +45,17 @@ export default function Sidebar({
   useEffect(() => {
     fetchCategories();
   }, []);
+  
+  useEffect(() => {
+  if (!loading && categories.length > 0 && !activeCategory) {
+    // Prefer Inbox
+    const inbox =
+      categories.find((c) => c.name === "Inbox") ?? categories[0];
+
+    onSelectCategory(inbox);
+  }
+}, [loading, categories, activeCategory, onSelectCategory]);
+
 
   return (
     <aside

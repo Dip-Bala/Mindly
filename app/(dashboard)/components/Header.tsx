@@ -6,8 +6,16 @@ import { CircleUserRound, PanelLeft, User, X } from "lucide-react";
 import { useSession } from "next-auth/react";
 import Image from 'next/image'
 import { useState } from "react";
+import AddContentModal from "./AddContentModal";
+
+type Category = {
+  _id: string;
+  name: string;
+  color: string;
+};
+
 type HeaderProps = {
-  activeCategory: string,
+  activeCategory: Category | null,
   sidebarOpen: boolean;
   onMenuClick: () => void;
 };
@@ -15,7 +23,9 @@ type HeaderProps = {
 export default function Header({ activeCategory, sidebarOpen, onMenuClick }: HeaderProps) {
   const session = useSession();
   const [openSettings, setOpenSettings] = useState(false);
-  console.log(session)
+  const [showModal, setShowModal] = useState(false);
+  // console.log("activeCategory", activeCategory);
+  // console.log(session)
   return (
     <header className="flex items-center justify-between gap-2 p-3 border-b border-border">
       <div className="flex gap-2 items-center">
@@ -28,7 +38,20 @@ export default function Header({ activeCategory, sidebarOpen, onMenuClick }: Hea
         </button>
       )}
 
-      <h1 className="font-medium">{activeCategory}</h1>
+      <h1 className="font-medium">{activeCategory?.name}</h1>
+       <button
+              onClick={() => setShowModal(true)}
+              className="px-4 py-2 rounded bg-primary text-black cursor-pointer"
+            >
+              Add Content
+            </button>
+      
+            {showModal && (
+              <AddContentModal
+                activeCategoryId={activeCategory?._id!}
+                onClose={() => setShowModal(false)}
+              />
+            )}
       </div>
 
       <div className="flex gap-2">

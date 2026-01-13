@@ -18,7 +18,6 @@ const ContentSchema = new Schema(
     type: {
       type: String,
       enum: ["link", "video", "pdf", "image", "tweet", "note"],
-      required: true,
     },
 
     source: {
@@ -32,7 +31,6 @@ const ContentSchema = new Schema(
         "upload",
         "other",
       ],
-      required: true,
     },
 
     domain: {
