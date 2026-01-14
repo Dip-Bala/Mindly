@@ -20,6 +20,7 @@ export default function ContentGrid({ content }: ContentGridProps) {
         grid-cols-1
         sm:grid-cols-2
         lg:grid-cols-3
+        lg:px-18
       "
     >
       {content.map((item) => (

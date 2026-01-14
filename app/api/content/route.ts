@@ -5,6 +5,30 @@ import { User } from "@/models/User";
 import { Category } from "@/models/Category";
 import { Content } from "@/models/Content";
 
+
+function getContentType(url: string) {
+  const lower = url.toLowerCase();
+
+  if (/\.(png|jpg|jpeg|gif|webp)$/.test(lower)) return "image";
+  if (lower.endsWith(".pdf")) return "pdf";
+  if (/\.(mp4|webm|ogg)$/.test(lower) || getHostname(lower).includes('youtube')) return "video";
+
+  // Cloudinary videos without extension
+  if (url.includes("res.cloudinary.com") && url.includes("/video/")) {
+    return "video";
+  }
+
+  return "link";
+}
+
+function getHostname(url: string){
+  try {
+      return new URL(url).hostname.replace("www.", "");
+    } catch {
+      return url;
+    }
+}
+
 export async function POST(req: NextRequest) {
   try {
     const session = await requireSession();
@@ -19,10 +43,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const { url, categoryId } = await req.json();
-
-    // console.log(url);
-    // console.log(categoryId)
+    const { url, categoryId, title} = await req.json();
 
     if (!url || !categoryId) {
       return NextResponse.json(
@@ -44,11 +65,16 @@ export async function POST(req: NextRequest) {
       );
     }
 
+    const type = getContentType(url);
+    const domain = getHostname(url);
+
     const content = await Content.create({
       userId: user._id,
       categoryId,
       url,
-      type: "link", // later auto-detect
+      title,
+      type,
+      domain,
     });
 
     return NextResponse.json({ content }, { status: 201 });

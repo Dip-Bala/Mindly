@@ -6,6 +6,7 @@ type InputProps = {
   placeholder?: string;
   value: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  disabled?: boolean;
 };
 
 export default function Input({
@@ -14,6 +15,7 @@ export default function Input({
   placeholder,
   value,
   onChange,
+  disabled
 }: InputProps) {
   return (
     <div className="flex flex-col gap-2">
@@ -36,6 +38,7 @@ export default function Input({
           focus:border
           focus:outline-[var(--color-accent)]
         "
+        disabled={disabled}
       />
     </div>
   );

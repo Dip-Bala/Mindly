@@ -2,7 +2,7 @@ import { Schema, model, models, Types } from "mongoose";
 
 const ContentSchema = new Schema(
   {
-    userId: {
+    userId: {                      //get email from session -> get _id from User model
       type: Types.ObjectId,
       ref: "User",
       required: true,
@@ -10,34 +10,34 @@ const ContentSchema = new Schema(
     },
 
     title: {
-      type: String,
+      type: String,        //user provided - client sends in req
       // required: true,
       trim: true,
     },
 
-    type: {
+    type: {                  //auto-detect in backend
       type: String,
       enum: ["link", "video", "pdf", "image", "tweet", "note"],
+      required: true,
     },
 
-    source: {
-      type: String,
-      enum: [
-        "youtube",
-        "twitter",
-        "instagram",
-        "github",
-        "web",
-        "upload",
-        "other",
-      ],
-    },
+    // source: {           //auto-detect in backend
+    //   type: String,
+    //   enum: [
+    //     "youtube",
+    //     "twitter",
+    //     "instagram",
+    //     "github",
+    //     "web",
+    //     "upload",
+    //   ],
+    // },
 
-    domain: {
+    domain: {              //implies the hostname   //auto-detect in backend
       type: String, 
     },
 
-    url: {
+    url: {               //user provided 
       type: String,
       required: true,
     },
@@ -59,6 +59,7 @@ const ContentSchema = new Schema(
       type: Types.ObjectId,
       ref: "Category",
       required: true,
+      index: true,
     },
 
     isArchived: {
