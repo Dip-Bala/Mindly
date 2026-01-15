@@ -9,7 +9,7 @@ import HowItWorks from "@/components/layout/HowItWorks";
 
 export default function HomePage() {
   return (
-    <div>
+    <div className="bg-grid">
       <Header />
       <Hero />
       <Features />

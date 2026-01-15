@@ -40,7 +40,6 @@ export default async function DashboardPage({ searchParams }: PageProps) {
   .populate("logoId")
   .lean();
 
-  console.log("content", content);
 
 const serializedContent = content.map((item) => ({
   _id: item._id.toString(),

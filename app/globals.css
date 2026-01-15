@@ -1,51 +1,76 @@
 @import "tailwindcss";
+@layer utilities {
+  /* ─────────────────────────────────────────────
+     Grid background (lines)
+     ───────────────────────────────────────────── */
+  .bg-grid {
+    background-image:
+      linear-gradient(to right, rgba(0,0,0,0.06) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(0,0,0,0.06) 1px, transparent 1px);
+    background-size: 50px 80px;
+  }
 
-/* ================================
-   DESIGN TOKENS (DEFAULT = LIGHT)
-   ================================ */
+  [data-theme="dark"] .bg-grid {
+    background-image:
+      linear-gradient(to right, rgba(255,255,255,0.06) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(255,255,255,0.06) 1px, transparent 1px);
+  }
+
+  /* ─────────────────────────────────────────────
+     Dot grid background
+     ───────────────────────────────────────────── */
+  .bg-dot-grid {
+    background-image: radial-gradient(
+      rgba(0,0,0,0.12) 1px,
+      transparent 1px
+    );
+    background-size: 24px 24px;
+  }
+
+  [data-theme="dark"] .bg-dot-grid {
+    background-image: radial-gradient(
+      rgba(255,255,255,0.12) 1px,
+      transparent 1px
+    );
+  }
+
+  /* ─────────────────────────────────────────────
+     Grid with top fade (hero-grade)
+     ───────────────────────────────────────────── */
+  .bg-grid-fade {
+    background-image:
+      linear-gradient(to right, rgba(0,0,0,0.04) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(0,0,0,0.04) 1px, transparent 1px),
+      radial-gradient(circle at top, rgba(0,0,0,0.08), transparent 60%);
+    background-size: 32px 32px, 32px 32px, 100% 100%;
+  }
+
+  [data-theme="dark"] .bg-grid-fade {
+    background-image:
+      linear-gradient(to right, rgba(255,255,255,0.04) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(255,255,255,0.04) 1px, transparent 1px),
+      radial-gradient(circle at top, rgba(255,255,255,0.08), transparent 60%);
+  }
+}
 
 @theme {
   /* Fonts */
   --font-sans: var(--font-inter);
   --font-logo: var(--font-satoshi);
+  
+   --color-primary: #FFE169;        
+  --color-primary-soft: #FFFD82;   
+  --color-primary-deep: #ffd400;
+/* FFD639 */
 
-  /* =====================
-     BRAND (SINGLE ACCENT)
-     ===================== */
-  /* Muted ink-violet (modern, calm, non-pop) */
-   --color-primary: #FFE169;        /* main CTA */
-  --color-primary-soft: #fcefb4;   /* backgrounds / popups */
-  --color-primary-deep: #ffd400; 
-
-  /* =====================
-     BACKGROUNDS
-     ===================== */
   --color-bg: #FAFAFA;
   --color-surface: #FFFFFF;
   --color-surface-elevated: #F3F4F6;
   --color-border: #E5E7EB;
 
-  /* =====================
-     TEXT
-     ===================== */
   --color-text: #0F172A;
   --color-text-secondary: #374151;
   --color-text-muted: #6B7280;
-
-  --color-neutral-bg: #F3F4F6;
-  --color-neutral-text: #374151;
-
-  --color-yellow-bg: #FFF6D6;
-  --color-yellow-text: #9A7B00;
-
-  --cat-bluegray-bg: #EEF2F7;
-  --cat-bluegray-text: #334155;
-
-  --cat-violet-bg: #F3F0FF;
-  --cat-violet-text: #5B4FCF;
-
-  --cat-gray-bg: #F1F1F1;
-  --cat-gray-text: #6B7280;
 }
 
 /* ================================
@@ -53,6 +78,10 @@
    ================================ */
 
 :root[data-theme="dark"] {
+   --color-primary: #FFE169;        
+  --color-primary-soft: #fcefb4;   
+  --color-primary-deep: #ffd400; 
+  
   --color-bg: #0B0B0B;
   --color-surface: #121212;
   --color-surface-elevated: #1A1A1A;
@@ -62,26 +91,8 @@
   --color-text-secondary: #A1A1A1;
   --color-text-muted: #737373;
 
-  /* Dark equivalents */
-  --cat-neutral-bg: #1A1A1A;
-  --cat-neutral-text: #D1D5DB;
-
-  --cat-yellow-bg: #2A240F;
-  --cat-yellow-text: #F2C94C;
-
-  --cat-bluegray-bg: #111827;
-  --cat-bluegray-text: #CBD5E1;
-
-  --cat-violet-bg: #1C1835;
-  --cat-violet-text: #C7BFFF;
-
-  --cat-gray-bg: #181818;
-  --cat-gray-text: #9CA3AF;
 }
 
-/* ================================
-   BASE STYLES
-   ================================ */
 
 body {
   background-color: var(--color-bg);

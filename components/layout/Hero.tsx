@@ -1,26 +1,51 @@
+import {
+  ChevronRight,
+  FileText,
+  Github,
+  Globe,
+  Instagram,
+  Link,
+  MoveRight,
+  SquarePlay,
+} from "lucide-react";
 import { Button } from "../ui/Button";
+import { useRouter } from "next/navigation";
 
 export default function Hero() {
+  const router = useRouter();
   return (
-    <section className="p-8 sm:p-16 max-w-5xl mx-auto">
-      <h1 className="text-5xl sm:text-6xl font-medium text-center sm:text-left">
-        Your Second Brain for the Web
+    <section className="p-8 sm:p-16 max-w-5xl mx-auto flex flex-col items-center gap-4">
+      <h1 className="text-5xl sm:text-6xl font-bold text-center ">
+        Your second brain for everything you find online.
       </h1>
 
-      <p className="mt-4 max-w-2xl text-md text-[color:var(--color-text-secondary)]">
-        Save videos, tweets, links, articles & documents — all in one beautifully
-        organized space.
+      <p className="mt-4 text-xl text-text-secondary text-center">
+        Save videos, tweets, links, articles & documents — all in one
+        beautifully organized space.
       </p>
-
-      <div className="mt-8 flex gap-4">
-        <button className="px-6 py-3 rounded-lg bg-[--color-accent] hover:bg-[--color-primary-hover] text-white font-medium">
-          Get Started
+      <div className="flex text-text itmes-center justify-center gap-2 my-8 max-w-sm bg-surface rounded-full border border-border px-4 py-1">
+        <Link size={30} strokeWidth={0.5} />
+        <FileText size={30} strokeWidth={0.5} />
+        <SquarePlay size={30} strokeWidth={0.5} />
+        <Instagram size={30} strokeWidth={0.5} />
+        <Github size={30} strokeWidth={0.5} />
+        <Globe size={30} strokeWidth={0.5} />
+      </div>
+      <div className="flex justify-center">
+      <div className="flex gap-8">
+         <button
+          onClick={() => router.replace("/login")}
+          className="px-6 py-3 rounded-lg bg-primary text-black font-medium flex gap-1 border border-border cursor-pointer"
+        >
+          Get Extension 
         </button>
-        <Button text="Get Started" variant="secondary"/>
-
-        <button className="px-6 py-3 rounded-lg border border-[color:var(--color-border)] text-[color:var(--color-text)]">
-          Learn More
+        <button
+          onClick={() => router.replace("/login")}
+          className="px-6 py-3 rounded-lg text-text font-medium flex gap-1 border cursor-pointer border-text items-center"
+        >
+          Get Started <ChevronRight size={20} strokeWidth={2}/>
         </button>
+      </div>
       </div>
     </section>
   );
