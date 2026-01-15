@@ -1,28 +1,44 @@
 import { Link, SquareArrowOutUpRight } from "lucide-react";
 import { useMemo } from "react";
+import Image from "next/image";
 import Twitter from "./Twitter";
 
-type ContentCardProps = {
-  content: {
-    _id: string;
-    url: string;
-    categoryId?: {
-      name: string;
-      color: string;
-    };
-    domain: string;
-    title: string;
-    type: string;
-    createdAt: string;
+type ContentProps = {
+  _id: string;
+  url: string;
+  categoryId?: {
+    name: string;
+    color: string;
   };
+  domain: string;
+  title: string;
+  type: string;
+  logoId?: {
+    _id: string;
+    title: string;
+    category: string;
+    route: {
+      dark?: string;
+      light?: string;
+      url?: string;
+    };
+    url: string;
+  };
+  createdAt: string;
+};
+type ContentCardProps = {
+  content: ContentProps;
+  theme: "dark" | "light";
 };
 
-export default function ContentCard({ content }: ContentCardProps) {
+export default function ContentCard({ content, theme }: ContentCardProps) {
+  // console.log("content", content)
   const tweetInfo =
     content.domain === "x.com" ? extractTweetDetails(content.url) : null;
 
-  console.log("tweetInfo", tweetInfo);
+  const previewImage = getLinkPreviewImage(content, theme);
 
+  console.log(previewImage);
   return (
     <div
       className="
@@ -36,48 +52,62 @@ export default function ContentCard({ content }: ContentCardProps) {
       {/* Preview */}
       <div className="p-2 bg-surface ">
         <div className="h-48 bg-bg flex items-center justify-center object-cover rounded-lg">
-        {content.type === "image" && (
-          <img
-            src={content.url}
-            alt="Preview"
-            className="h-full w-full object-cover"
-          />
-        )}
-
-        {content.type === "video" && content.domain !== "youtube.com" && (
-          <video
-            src={content.url}
-            className="h-full w-full object-cover"
-            controls
-          />
-        )}
-
-        {content.type === "video" && content.domain === "youtube.com" && (
-          <iframe
-            width=""
-            src={`${getYouTubeEmbedUrl(content.url)} `}
-            title="YouTube video player"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            referrerPolicy="strict-origin-when-cross-origin"
-            allowFullScreen
-          ></iframe>
-        )}
-
-        {content.type === "pdf" && (
-          <div className="text-sm text-text-muted">
-            <img
-              src={content.url.replace(".pdf", ".jpg")}
-              className="h-48 object-cover"
+          {content.type === "image" && (
+            <Image
+              width={40}
+              height={40}
+              src={content.url}
+              alt="Preview"
+              className="h-full w-full object-cover"
             />
-          </div>
-        )}
+          )}
 
-        {content.type === "link" && content.domain === "x.com" && (
-          <Twitter ID={tweetInfo!.xId} username={tweetInfo!.username} />
-        )}
+          {content.type === "video" && content.domain !== "youtube.com" && (
+            <video
+              src={content.url}
+              className="h-full w-full object-cover"
+              controls
+            />
+          )}
 
-        {content.type === "link" && content.domain !== "x.com" && <Link />}
-      </div>
+          {content.type === "video" && content.domain === "youtube.com" && (
+            <iframe
+              width=""
+              src={`${getYouTubeEmbedUrl(content.url)} `}
+              title="YouTube video player"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              referrerPolicy="strict-origin-when-cross-origin"
+              allowFullScreen
+            ></iframe>
+          )}
+
+          {content.type === "pdf" && (
+            <div className="text-sm text-text-muted">
+              <img
+                src={content.url.replace(".pdf", ".jpg")}
+                className="h-48 object-cover"
+              />
+            </div>
+          )}
+
+          {content.type === "link" && content.domain === "x.com" && (
+            <Twitter ID={tweetInfo!.xId} username={tweetInfo!.username} />
+          )}
+
+          {content.type === "link" && content.domain !== "x.com" ? (
+            previewImage ? (
+              <img
+                src={previewImage}
+                alt={content.logoId?.title || content.domain}
+                className="h-10 w-10 object-contain"
+              />
+            ) : (
+              <Link />
+            )
+          ) : null}
+
+          {/* {content.type === "link"  &&  content.domain !== "x.com"  && <Link/>} */}
+        </div>
       </div>
 
       {/* Content */}
@@ -137,5 +167,30 @@ function extractTweetDetails(
       xId: match[2],
     };
   }
+  return null;
+}
+
+function getLinkPreviewImage(
+  content: {
+    domain: string;
+    logoId?: {
+      route?: { light?: string | null; dark?: string | null } | null;
+    };
+  },
+  theme: "light" | "dark"
+) {
+  // 1️⃣ SVGL themed logo
+  const themedLogo =
+    content.logoId?.route &&
+    (theme === "dark" ? content.logoId.route.dark : content.logoId.route.light);
+
+  if (themedLogo) return themedLogo;
+
+  // 2️⃣ Google favicon fallback
+  if (content.domain) {
+    return `https://www.google.com/s2/favicons?sz=64&domain=${content.domain}`;
+  }
+
+  // 3️⃣ Nothing usable
   return null;
 }

@@ -1,3 +1,5 @@
+"use client";
+import { useTheme } from "@/app/ThemeProvider";
 import ContentCard from "./ContentCard";
 
 type ContentGridProps = {
@@ -5,6 +7,7 @@ type ContentGridProps = {
 };
 
 export default function ContentGrid({ content }: ContentGridProps) {
+  const theme = useTheme();
   if (!content.length) {
     return (
       <div className="text-sm text-text-muted">
@@ -24,7 +27,7 @@ export default function ContentGrid({ content }: ContentGridProps) {
       "
     >
       {content.map((item) => (
-        <ContentCard key={item._id} content={item} />
+        <ContentCard key={item._id} content={item} theme={theme} />
       ))}
     </div>
   );

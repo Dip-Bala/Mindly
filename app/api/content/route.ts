@@ -4,6 +4,7 @@ import { requireSession } from "@/lib/requireSession";
 import { User } from "@/models/User";
 import { Category } from "@/models/Category";
 import { Content } from "@/models/Content";
+import { resolveLogoFromSVGL } from "@/lib/resolveLogo";
 
 
 function getContentType(url: string) {
@@ -52,7 +53,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Ensure category belongs to user
+
     const category = await Category.findOne({
       _id: categoryId,
       userId: user._id,
@@ -68,14 +69,26 @@ export async function POST(req: NextRequest) {
     const type = getContentType(url);
     const domain = getHostname(url);
 
-    const content = await Content.create({
-      userId: user._id,
-      categoryId,
-      url,
-      title,
-      type,
-      domain,
-    });
+    // const appName = getAppNameFromDomain(domain);
+
+let logo = null;
+if (type === "link") {
+  try {
+    logo = await resolveLogoFromSVGL(domain);
+    console.log("logo", logo);
+  } catch (e) {
+    console.error("SVGL failed", e);
+  }
+}
+const content = await Content.create({
+  userId: user._id,
+  categoryId,
+  url,
+  title,
+  type,
+  domain,
+  logoId: logo?._id,
+});
 
     return NextResponse.json({ content }, { status: 201 });
   } catch (err: any) {
@@ -119,7 +132,8 @@ export async function GET(req: NextRequest) {
 
     const content = await Content.find(filter)
       .sort({ createdAt: -1 })
-      .populate("categoryId", "name color");
+      .populate("categoryId", "name color")
+      .populate("logoId");
 
     return NextResponse.json({ content }, { status: 200 });
   } catch (err: any) {

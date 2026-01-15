@@ -61,6 +61,10 @@ const ContentSchema = new Schema(
       required: true,
       index: true,
     },
+    logoId: {
+      type: Types.ObjectId,
+      ref: "Logo"
+    },
 
     isArchived: {
       type: Boolean,

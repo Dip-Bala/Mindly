@@ -6,6 +6,8 @@ import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import mongoose from "mongoose";
 import ContentGrid from "../components/ContentGrid";
+import "@/models/Logo";
+
 
 type PageProps = {
   searchParams: {
@@ -19,7 +21,7 @@ export default async function DashboardPage({ searchParams }: PageProps) {
 
   const { categoryId } = await searchParams;
 
-  console.log("categoryId from URL:", categoryId);
+  // console.log("categoryId from URL:", categoryId);
 
   await connectDB();
 
@@ -33,8 +35,46 @@ export default async function DashboardPage({ searchParams }: PageProps) {
   }
 
   const content = await Content.find(filter)
-    .sort({ createdAt: -1 })
-    .lean();
+  .sort({ createdAt: -1 })
+  .populate("categoryId", "name color")
+  .populate("logoId")
+  .lean();
 
-  return <ContentGrid content={content} />;
+  console.log("content", content);
+
+const serializedContent = content.map((item) => ({
+  _id: item._id.toString(),
+  url: item.url,
+  title: item.title,
+  type: item.type,
+  domain: item.domain,
+  createdAt: item.createdAt?.toISOString(),
+
+  categoryId: item.categoryId
+    ? {
+        name: item.categoryId.name,
+        color: item.categoryId.color,
+      }
+    : null,
+
+  logoId: item.logoId
+    ? {
+        _id: item.logoId._id.toString(),
+        title: item.logoId.title,
+        category: item.logoId.category,
+        url: item.logoId.url,
+       route: item.logoId.route
+  ? {
+      light: item.logoId.route.light ?? null,
+      dark: item.logoId.route.dark ?? null,
+    }
+  : null,
+
+      }
+    : null,
+}));
+
+
+  return <ContentGrid content={serializedContent} />;
+
 }
