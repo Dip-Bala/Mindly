@@ -34,7 +34,7 @@ export default function AddCategoryModal({ onClose }: { onClose: () => void }) {
     <div className="fixed inset-0 z-50 w-screen h-screen">
       {/* Backdrop */}
       <div
-        className="absolute inset-0 bg-[color:var(--color-primary-soft)]/40"
+        className="absolute inset-0 bg-primary-soft/40"
         onClick={onClose}
       />
 

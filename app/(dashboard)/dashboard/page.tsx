@@ -7,7 +7,7 @@ import { redirect } from "next/navigation";
 import mongoose from "mongoose";
 import ContentGrid from "../components/ContentGrid";
 import "@/models/Logo";
-
+import "@/models/Category";
 
 type PageProps = {
   searchParams: {
@@ -36,7 +36,7 @@ export default async function DashboardPage({ searchParams }: PageProps) {
 
   const content = await Content.find(filter)
   .sort({ createdAt: -1 })
-  .populate("categoryId", "name color")
+  .populate("categoryId", "name")
   .populate("logoId")
   .lean();
 
@@ -52,7 +52,6 @@ const serializedContent = content.map((item) => ({
   categoryId: item.categoryId
     ? {
         name: item.categoryId.name,
-        color: item.categoryId.color,
       }
     : null,
 

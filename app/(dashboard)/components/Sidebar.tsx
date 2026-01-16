@@ -9,7 +9,6 @@ import CategoryItem from "./CategoryItem";
 type Category = {
   _id: string;
   name: string;
-  color: string;
 };
 
 type SidebarProps = {

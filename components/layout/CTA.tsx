@@ -14,9 +14,6 @@ export default function CTA() {
   Memoir is free to use. Add AI-powered recall when you need it.
 </p>
 
-      {/* <button className="mt-8 px-8 py-3 rounded-lg bg-[--color-accent] hover:bg-[--color-primary-hover] text-white font-medium">
-        Try Memoir
-      </button> */}
        <button
           onClick={() => router.push("/login")}
           className="px-6 py-3 rounded-lg text-text font-medium flex gap-1 border border-border cursor-pointer items-center bg-surface"

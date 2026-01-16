@@ -25,7 +25,7 @@ export async function POST(req: NextRequest) {
         { status: 404 }
       );
     }
-    console.log("user", user);
+    // console.log("user", user);
 
     const { name, color } = await req.json();
 
@@ -49,7 +49,7 @@ export async function POST(req: NextRequest) {
       { status: 201 }
     );
   } catch (e) {
-    console.log(e);
+    // console.log(e);
     return NextResponse.json({ status: 500 });
   }
 }
@@ -77,11 +77,11 @@ export async function GET(req: NextRequest) {
     // console.log(category);
     if (category.length === 0) {
       const defaultCategyList = [
-        { name: "Inbox", color: "neutral", userId },
-        { name: "Learning", color: "yellow", userId },
-        { name: "Work", color: "bluegray", userId },
-        { name: "Ideas", color: "violet", userId },
-        { name: "Archive", color: "gray", userId },
+        { name: "Inbox",  userId },
+        { name: "Learning", userId },
+        { name: "Work", userId },
+        { name: "Ideas", userId },
+        { name: "Archive", userId },
       ];
       category = await Category.insertMany(defaultCategyList);
     }

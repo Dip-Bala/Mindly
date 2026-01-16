@@ -5,7 +5,7 @@ import { User } from "@/models/User";
 import { Category } from "@/models/Category";
 import { Content } from "@/models/Content";
 import { resolveLogoFromSVGL } from "@/lib/resolveLogo";
-
+import '@/models/Logo'
 
 function getContentType(url: string) {
   const lower = url.toLowerCase();
@@ -132,7 +132,7 @@ export async function GET(req: NextRequest) {
 
     const content = await Content.find(filter)
       .sort({ createdAt: -1 })
-      .populate("categoryId", "name color")
+      .populate("categoryId", "name")
       .populate("logoId");
 
     return NextResponse.json({ content }, { status: 200 });

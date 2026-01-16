@@ -5,7 +5,6 @@ import { CATEGORY_CONFIG } from "@/lib/categoryConfig";
 type Category = {
   _id: string;
   name: string;
-  color: string;
 };
 
 type Props = {
@@ -21,11 +20,9 @@ export default function CategoryItem({
 }: Props) {
   const config = CATEGORY_CONFIG[category.name] ?? {
     icon: Circle,
-    colorKey: category.color || "neutral",
   };
 
   const Icon = config.icon;
-  const c = config.colorKey;
   // console.log(c)
 
   return (

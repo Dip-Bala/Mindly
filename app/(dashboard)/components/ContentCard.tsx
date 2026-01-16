@@ -8,7 +8,6 @@ type ContentProps = {
   url: string;
   categoryId?: {
     name: string;
-    color: string;
   };
   domain: string;
   title: string;
