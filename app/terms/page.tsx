@@ -65,7 +65,7 @@ export default function TermsPage() {
         <h2 className="text-lg font-medium">7. Contact</h2>
         <p>
           If you have questions about these terms, please contact us at{" "}
-          <span className="underline">support@memoir.app</span>.
+          <span className="underline">dipanwita.bala.02@gmail.com</span>.
         </p>
       </section>
     </main>

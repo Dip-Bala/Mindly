@@ -71,7 +71,7 @@ export default function PrivacyPage() {
         <h2 className="text-lg font-medium">8. Contact</h2>
         <p>
           For privacy-related questions, contact us at{" "}
-          <span className="underline">privacy@memoir.app</span>.
+          <span className="underline">dipanwita.bala.02@gmail.com</span>.
         </p>
       </section>
     </main>

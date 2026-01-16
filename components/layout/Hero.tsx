@@ -33,20 +33,23 @@ export default function Hero() {
       </div>
       <div className="flex justify-center">
       <div className="flex gap-8">
-         <button
-          onClick={() => router.replace("/login")}
+         <a href=""
+          
           className="px-6 py-3 rounded-lg bg-primary text-black font-medium flex gap-1 border border-border cursor-pointer"
         >
           Get Extension 
-        </button>
+        </a>
         <button
-          onClick={() => router.replace("/login")}
+          onClick={() => router.push("/login")}
           className="px-6 py-3 rounded-lg text-text font-medium flex gap-1 border cursor-pointer border-text items-center"
         >
           Get Started <ChevronRight size={20} strokeWidth={2}/>
         </button>
       </div>
       </div>
+          <p className="mt-4 text-sm text-text-secondary text-center">
+  The extension saves pages instantly — nothing is shared publicly.
+</p>
     </section>
   );
 }
